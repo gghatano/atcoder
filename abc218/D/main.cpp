@@ -27,6 +27,8 @@ int main(){
   }
   cerr << v.size() << endl;
 
+  sort(v.begin(), v.end());
+
   ll ans = 0;
   for(int i = 0; i < N; i++){
     for(int j = i + 1; j < N; j++){
@@ -35,7 +37,7 @@ int main(){
       ll x2 = v[j].first;
       ll y2 = v[j].second;
 
-      if(x1 > x2 || y1 > y2){
+      if(x1 < x2 && y1 < y2){
         ll x3 = x1; ll y3 = y2;
         ll x4 = x2; ll y4 = y1;
 
