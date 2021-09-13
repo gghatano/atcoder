@@ -155,44 +155,57 @@ char toupper(char c) {
 
 
 // dijkstra法 
-ll INF = 10000000000000000;
-vector<vector<int>> v;
-vector<ll> dist;
-map<pii, ll> len;
- 
- 
-bool operator>(pil x, pil y){
-  return x.second > y.second;
-}
- 
-void shortest_path(int s){
-  // sから各点への最短距離計算
-  dist.assign(N,INF);
-  priority_queue<pil, vector<pil>, greater<pil>> q;
- 
-  dist[s] = 0;
-  map<int,int> check;
-  q.push(make_pair(s, dist[s]));
-  check[s] = 1;
- 
-  while(!q.empty()){
-    pil now = q.top();
-    int now_v = now.first;
-    ll now_dist = now.second;
-    check[now_v] = 1;
-    q.pop();
- 
-    if(dist[now_v] < now_dist) continue;
-    
-    for(int next_v: v.at(now_v)){
-      if(dist[next_v] > dist[now_v] + len[make_pair(now_v, next_v)]){
-        dist[next_v] = dist[now_v] + len[make_pair(now_v, next_v)];
-        q.push(make_pair(next_v, dist[next_v]));
+// graph g(N) : N点
+// g.add_edge(x,y,cost) : x->yにcostの枝
+// g.dijkstra(start) : startからの最短距離
+// g.d[i] : start -> i の最短距離
+# define REP(i,n) for (int i=0;i<(n);++i)
+struct edge{ll to, cost;};
+typedef pair<ll,ll> P;
+struct graph{
+  ll V;
+  vector<vector<edge> > G;
+  vector<ll> d;
+
+  graph(ll n){
+    init(n);
+  }
+
+  void init(ll n){
+    V = n;
+    G.resize(V);
+    d.resize(V);
+    REP(i,V){
+      d[i] = INF;
+    }
+  }
+
+  void add_edge(ll s, ll t, ll cost){
+    edge e;
+    e.to = t, e.cost = cost;
+    G[s].push_back(e);
+  }
+
+  void dijkstra(ll s){
+    REP(i,V){
+      d[i] = INF;
+    }
+    d[s] = 0;
+    priority_queue<P,vector<P>, greater<P> > que;
+    que.push(P(0,s));
+    while(!que.empty()){
+      P p = que.top(); que.pop();
+      ll v = p.second;
+      if(d[v]<p.first) continue;
+      for(auto e : G[v]){
+        if(d[e.to]>d[v]+e.cost){
+          d[e.to] = d[v]+e.cost;
+          que.push(P(d[e.to],e.to));
+        }
       }
     }
   }
-}
-
+};
 
 // LCS
 string LCS(string s, string t){
