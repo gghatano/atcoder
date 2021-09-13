@@ -14,4 +14,23 @@ ll INF = numeric_limits<ll>::max() / 2;
 int main(){
   // set precision (10 digit)
   cout << setprecision(10);
+  int N,M; cin >> N >> M;
+  scc_graph g(N);
+
+  for(int i = 0; i < M; i++){
+    int x,y; cin >> x >> y;
+    x--; y--;
+    g.add_edge(x,y);
+  }
+
+  auto list = g.scc();
+
+  ll ans = 0;
+  for(auto l : list){
+    // cerr << l.size() << endl;
+    ll tmp = l.size() * (l.size() - 1);
+    tmp /= 2;
+    ans += tmp;
+  }
+  cout << ans << endl;
 }
