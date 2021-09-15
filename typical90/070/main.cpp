@@ -14,4 +14,23 @@ ll INF = numeric_limits<ll>::max() / 2;
 int main(){
   // set precision (10 digit)
   cout << setprecision(10);
+  int N; cin >> N;
+  vector<ll> x(N), y(N);
+  for(int i = 0; i < N; i++){
+    cin >> x[i] >> y[i];
+  }
+
+  sort(x.begin(), x.end());
+  sort(y.begin(), y.end());
+
+  // 3 -> 1
+  // 4 -> 2
+  ll ans_x = x[N/2];
+  ll ans_y = y[N/2];
+  ll ans = 0;
+  for(int i = 0; i < N; i++){
+    ans += abs(x[i] - ans_x);
+    ans += abs(y[i] - ans_y);
+  }
+  cout << ans << endl;
 }
