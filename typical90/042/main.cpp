@@ -192,7 +192,19 @@ int main() {
     return 0;
   }
 
-  // i桁
-  vector<vector<mint>> dp(K+1, vector<mint>(9, 0));
+  // dp[j] : 和がjな数字の数
+  vector<mint> dp(K+1, 0);
 
+  dp[0] = 1;
+
+  for(int i = 0; i < K; i++){
+
+    for(int j = 1; j <= 9; j++){
+      if(i+j <= K){
+        dp[i + j] += dp[i];
+      }
+    }
+  }
+
+  cout << dp[K].val() << endl;
 }
